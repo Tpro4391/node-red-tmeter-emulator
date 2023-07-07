@@ -1,6 +1,6 @@
 {
   "name": "node-red-node-tmeter-emulator",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "ung dung tao cong to ao Tien Ho",
   "repository": {
     "type": "git",
@@ -19,11 +19,9 @@
   "homepage": "https://github.com/Tpro4391/node-red-tmeter-emulator#readme",
   "node-red": {
     "nodes": {
-        "T-Meter Emulator": "index.js"
+      "T-Meter Emulator": "index.js"
     },
-    "dependencies": [
-    ]
-},
-"dependencies": {
-}
+    "dependencies": []
+  },
+  "dependencies": {}
 }

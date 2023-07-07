@@ -42,11 +42,16 @@
                 "name": "Step",
                 "type": "num",
                 "value": "10"
+            },
+            {
+                "name": "Token",
+                "type": "str",
+                "value": "token"
             }
         ],
         "meta": {
             "module": "T-Meter Emulator",
-            "version": "1.1.0",
+            "version": "1.1.2",
             "author": "tienho.amitech@gmail.com",
             "desc": "Ứng dụng tạo dữ liệu công tơ điện tử ảo",
             "keywords": "node-red, random, emulator"
@@ -65,7 +70,7 @@
                 "type": "function",
                 "z": "0b55937e465c41d2",
                 "name": "ham random",
-                "func": "\nlet max = env.get(\"Imax\");\nif (msg.imax != null) {\n    max = msg.imax;\n}\nlet min = env.get(\"Imin\");\nif (msg.imin != null) {\n    min = msg.imin;\n}\nlet step = env.get(\"Step\");\nif (msg.step != null) {\n    step = msg.step;\n}\nlet U1= Trandom('U1', 410, 365, 3);\nlet U2= Trandom('U2', 410, 365, 3);\nlet U3= Trandom('U3', 410, 365, 3);\nlet U = (U1+U2+U3)/3;\nlet I1 = Trandom('I1', max, min, step);\nlet I2 = Trandom('I2', max, min, step);\nlet I3 = Trandom('I3', max, min, step);\nlet I = (I1+I2+I3)/3;\nlet PF = Trandom('PF', 1, 0.6, 0.1);\nlet P = U*I*PF/1000;\nlet kWh = context.get('kWh')|0;\nkWh += P/60;\ncontext.set('kWh', kWh);\nmsg.payload = {\n    U1: U1,\n    U2: U2,\n    U3: U3,\n    U:U,\n    I1: I1,\n    I2: I2,\n    I3: I3,\n    I: I,\n    PF: PF,\n    P: P,\n    kWh: kWh\n}\nreturn msg;\n\nfunction Trandom(key, max, min, buoc){\n    let value = context.get(key)|0;\n    let chieu = context.get(key+'chieu') | 1;\n    if (value > max) {\n        value = max;\n        chieu = -1;\n        context.set(key + 'chieu', chieu);\n    }\n    if (value < min) {\n        value = min\n        chieu = 1;\n        context.set(key + 'chieu', chieu);\n    }\n    value += Math.random() * buoc*chieu;\n    context.set(key, value);\n    return value;\n}\n",
+                "func": "\nlet max = env.get(\"Imax\");\nif (msg.imax != null) {\n    max = msg.imax;\n}\nlet min = env.get(\"Imin\");\nif (msg.imin != null) {\n    min = msg.imin;\n}\nlet step = env.get(\"Step\");\nif (msg.step != null) {\n    step = msg.step;\n}\nlet token = env.get(\"Token\");\nif (msg.token != null) {\n    token = msg.token;\n}\nlet U1= Trandom('U1', 410, 365, 3);\nlet U2= Trandom('U2', 410, 365, 3);\nlet U3= Trandom('U3', 410, 365, 3);\nlet U = (U1+U2+U3)/3;\nlet I1 = Trandom('I1', max, min, step);\nlet I2 = Trandom('I2', max, min, step);\nlet I3 = Trandom('I3', max, min, step);\nlet I = (I1+I2+I3)/3;\nlet PF = Trandom('PF', 1, 0.6, 0.1);\nlet P = U*I*PF/1000;\nlet Hz = Trandom('Hz', 49, 51, 0.1);\nlet kWh = 0;\nif (flow.get(token + 'kWh')>0){\n    kWh = flow.get(token + 'kWh');\n}\nkWh += P/60;\nflow.set(token+'kWh', kWh);\nmsg.payload = {\n    U1: U1,\n    U2: U2,\n    U3: U3,\n    U:U,\n    I1: I1,\n    I2: I2,\n    I3: I3,\n    I: I,\n    PF: PF,\n    Hz: Hz,\n    P: P,\n    kWh: kWh\n}\nreturn msg;\n\nfunction Trandom(key, max, min, buoc){\n    let value = 0;\n    if (context.get(key)>0){\n        value = context.get(key);\n    }\n    let chieu = context.get(key+'chieu') | 1;\n    if (value > max) {\n        value = max;\n        chieu = -1;\n        context.set(key + 'chieu', chieu);\n    }\n    if (value < min) {\n        value = min\n        chieu = 1;\n        context.set(key + 'chieu', chieu);\n    }\n    value += Math.random() * buoc*chieu;\n    context.set(key, value);\n    return value;\n}\n",
                 "outputs": 1,
                 "noerr": 0,
                 "initialize": "",
