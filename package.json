@@ -1,0 +1,33 @@
+{
+  "name": "node-red-node-tmeter-emulator",
+  "version": "1.0.0",
+  "description": "ung dung tao cong to ao Tien Ho",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tpro4391/node-red-tmeter-emulator.git"
+  },
+  "keywords": [
+    "node-red",
+    "random",
+    "emulator"
+  ],
+  "author": "tienho.amitech@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tpro4391/node-red-tmeter-emulator/issues"
+  },
+  "homepage": "https://github.com/Tpro4391/node-red-tmeter-emulator#readme",
+  "node-red": {
+    "nodes": {
+        "example-node": ""
+    },
+    "dependencies": [
+    ]
+},
+"dependencies": {
+}
+}

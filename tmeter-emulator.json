@@ -1,0 +1,82 @@
+    {
+        "id": "0b55937e465c41d2",
+        "type": "subflow",
+        "name": "T-Meter Emulator",
+        "info": "## Ứng dụng tạo dữ liệu công tơ điểm tử ảo\r\n> Được phát triển bởi Tiến Hồ\r\n**Cấu hình input:**\r\nmsg.imax:\r\n- Ngưỡng dòng Max;\r\nmsg.imin:\r\n- Ngưỡng dòng Min;\r\nmsg.step:\r\n- Bước nhảy random\r\n\r\n**Output:** random các chỉ số điện trong msg.payload\r\n{\r\n    \"U1\":366.60043930892937,\r\n    \"U2\":366.71997254228,\r\n    \"U3\":366.22967426114616,\r\n    \"U\":366.51669537078516,\r\n    \"I1\":325.75642744854815,\r\n    \"I2\":330.33575288315956,\r\n    \"I3\":301.29996608386136,\r\n    \"I\":319.1307154718564,\r\n    \"PF\":0.6821408463985453,\r\n    \"P\":79.7877877675785,\r\n    \"kWh\":1.3297964627929748\r\n}",
+        "category": "common",
+        "in": [
+            {
+                "x": 120,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "3f3504a3db75ed31"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 620,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "3f3504a3db75ed31",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [
+            {
+                "name": "Dòng điện Max (A)",
+                "type": "num",
+                "value": "50"
+            },
+            {
+                "name": "Dòng điện Min (A)",
+                "type": "num",
+                "value": "10"
+            },
+            {
+                "name": "Step",
+                "type": "num",
+                "value": "10"
+            }
+        ],
+        "meta": {
+            "module": "T-Meter Emulator",
+            "type": "tmeter-emulator-tpro4391",
+            "version": "1.0.0",
+            "author": "tienho.amitech@gmail.com",
+            "desc": "Ứng dụng tạo dữ liệu công tơ điện tử ảo",
+            "keywords": "node-red, random, emulator"
+        },
+        "color": "#3FADB5",
+        "inputLabels": [
+            "Tham số đầu vào"
+        ],
+        "outputLabels": [
+            "Dữ liệu đầu ra"
+        ],
+        "icon": "node-red/status.svg",
+        "flow": [
+            {
+                "id": "3f3504a3db75ed31",
+                "type": "function",
+                "z": "0b55937e465c41d2",
+                "name": "ham random",
+                "func": "\nlet max = env.get(\"Dòng điện Max (A)\");\nif (msg.imax != null) {\n    max = msg.imax;\n}\nlet min = env.get(\"Dòng điện Min (A)\");\nif (msg.imin != null) {\n    min = msg.imin;\n}\nlet step = env.get(\"Step\");\nif (msg.step != null) {\n    step = msg.step;\n}\nlet U1= Trandom('U1', 410, 365, 3);\nlet U2= Trandom('U2', 410, 365, 3);\nlet U3= Trandom('U3', 410, 365, 3);\nlet U = (U1+U2+U3)/3;\nlet I1 = Trandom('I1', max, min, step);\nlet I2 = Trandom('I2', max, min, step);\nlet I3 = Trandom('I3', max, min, step);\nlet I = (I1+I2+I3)/3;\nlet PF = Trandom('PF', 1, 0.6, 0.1);\nlet P = U*I*PF/1000;\nlet kWh = context.get('kWh')|0;\nkWh += P/60;\ncontext.set('kWh', kWh);\nmsg.payload = {\n    U1: U1,\n    U2: U2,\n    U3: U3,\n    U:U,\n    I1: I1,\n    I2: I2,\n    I3: I3,\n    I: I,\n    PF: PF,\n    P: P,\n    kWh: kWh\n}\nreturn msg;\n\nfunction Trandom(key, max, min, buoc){\n    let value = context.get(key)|0;\n    let chieu = context.get(key+'chieu') | 1;\n    if (value > max) {\n        value = max;\n        chieu = -1;\n        context.set(key + 'chieu', chieu);\n    }\n    if (value < min) {\n        value = min\n        chieu = 1;\n        context.set(key + 'chieu', chieu);\n    }\n    value += Math.random() * buoc*chieu;\n    context.set(key, value);\n    return value;\n}\n",
+                "outputs": 1,
+                "noerr": 0,
+                "initialize": "",
+                "finalize": "",
+                "libs": [],
+                "x": 350,
+                "y": 80,
+                "wires": [
+                    []
+                ]
+            }
+        ]
+    }
